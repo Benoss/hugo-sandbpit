@@ -1,0 +1,11 @@
+baseURL = "/"
+languageCode = "en-us"
+title = "My New Hugo Site"
+theme = "starter-theme"
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[build]
+  writeStats = true
