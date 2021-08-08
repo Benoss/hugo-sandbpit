@@ -1,5 +1,5 @@
 from requests_oauthlib import OAuth2Session
-from flask import request, redirect, abort
+from flask import redirect, abort, Request
 import json
 import os
 from urllib.parse import urlparse
@@ -21,19 +21,10 @@ scope = os.environ.get("SCOPES", "public_repo,read:user")
 ssl_enabled = os.environ.get("SSL_ENABLED", "1")
 
 
-def index(request):
+def index(request: Request):
     """Show a log in with github link"""
-    print(
-        [
-            request.path,
-            request.full_path,
-            request.script_root,
-            request.base_url,
-            request.url,
-            request.url_root,
-        ]
-    )
-    return f'Hello<br><a href="{request.url_root}auth">Log in with Github</a>'
+    function_url = os.environ.get("FUNCTION_URL", request.url_root)
+    return f'Hello<br><a href="{function_url}auth">Log in with Github</a>'
 
 
 def auth():
@@ -54,7 +45,7 @@ def auth():
         return redirect(authorization_url)
 
 
-def callback(request):
+def callback(request: Request):
     state = request.args.get("state", "No_state")
     if state_management_enabled():
         # Check the state to protect against CSRF
@@ -107,7 +98,7 @@ def success():
     return "", 204
 
 
-def cloud_run(request):
+def cloud_run(request: Request):
     function_enabled = os.environ.get("FUNCTION_ENABLED", 0)
     if not function_enabled == "1":
         return abort(404)
@@ -122,3 +113,17 @@ def cloud_run(request):
         return success()
     else:
         return abort(404)
+
+
+if __name__ == "__main__":
+    from flask import Flask, request as flask_request
+    app = Flask(__name__)
+
+
+    @app.route("/", defaults={"path": ""})
+    @app.route("/<path:path>")
+    def hello_world(path):
+        return cloud_run(flask_request)
+
+
+    app.run(debug=True)

@@ -1,9 +1,9 @@
 backend:
   name: github
   repo: Benoss/hugo-sandbpit   # Path to your GitHub repository
-  branch: master    # Branch for Netlify CMS to create Pull Requests against
-  base_url: https://us-central1-prismatic-website.cloudfunctions.net   # Base URL extracted from the Cloud Function Endpoint URL
-  auth: netlify_auth/auth
+  branch: main    # Branch for Netlify CMS to create Pull Requests against
+  base_url: https://us-central1-prismatic-website.cloudfunctions.net # Base URL extracted from the Cloud Function Endpoint URL
+  auth_endpoint: github_auth/auth
 
 # npx netlify-cms-proxy-server
 #backend:
