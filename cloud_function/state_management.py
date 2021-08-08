@@ -19,7 +19,6 @@ def save_state(state):
 
 def create_state():
     state = str(uuid4())
-
     save_state(state)
 
     return state

@@ -4,20 +4,31 @@ backend:
   branch: master    # Branch for Netlify CMS to create Pull Requests against
   base_url: https://us-central1-prismatic-website.cloudfunctions.net   # Base URL extracted from the Cloud Function Endpoint URL
   auth: netlify_auth/auth
+
+# npx netlify-cms-proxy-server
+#backend:
+#  name: git-gateway
+#local_backend: true
+
+public_folder: /img
 media_library:
   name: uploadcare
   config:
     publicKey: fcd44e7a11584fd3a2ba # replace with your Public API key or use for testing env only
+
+
 collections:
-  - name: 'blog'
+  - name: 'posts'
     label: 'Blog'
-    folder: 'content/blog'
+    folder: 'content/posts'
     create: true
-    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    slug: '{{slug}}'
     editor:
       preview: false
     fields:
       - { label: 'Title', name: 'title', widget: 'string' }
       - { label: 'Publish Date', name: 'date', widget: 'datetime' }
       - { label: 'Description', name: 'description', widget: 'string' }
+      - { label: 'Tags', name: 'tags', widget: 'list' }
       - { label: 'Body', name: 'body', widget: 'markdown' }
+      - { label: 'Cover Image', name: 'cover', widget: 'image' }
